@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidBuddy — 招投标AI助手</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- 侧边栏 -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+            <span class="brand-name">BidBuddy</span>
+            <span class="brand-sub">招投标AI助手</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a class="nav-item active" data-page="home" onclick="switchPage('home')">
+            <span class="nav-icon">🏠</span>
+            <span>控制台</span>
+        </a>
+        <a class="nav-item" data-page="results" onclick="switchPage('results')">
+            <span class="nav-icon">📋</span>
+            <span>招标结果</span>
+            <span class="nav-badge" id="resultBadge" style="display:none">0</span>
+        </a>
+        <a class="nav-item" data-page="sites" onclick="switchPage('sites')">
+            <span class="nav-icon">🌐</span>
+            <span>网站管理</span>
+        </a>
+        <a class="nav-item" data-page="settings" onclick="switchPage('settings')">
+            <span class="nav-icon">⚙️</span>
+            <span>设置</span>
+        </a>
+    </nav>
+
+    <!-- 模型选择器 -->
+    <div class="sidebar-section">
+        <div class="sidebar-label">当前模型</div>
+        <div class="model-selector" id="modelSelector" onclick="toggleModelPicker()">
+            <span class="model-dot" id="modelDot"></span>
+            <span id="currentModelName">DeepSeek Chat</span>
+            <span class="model-arrow">▾</span>
+        </div>
+    </div>
+
+    <!-- 模型选择弹窗 -->
+    <div class="model-picker" id="modelPicker" style="display:none">
+        <div class="picker-header">
+            <span>选择 AI 模型</span>
+            <button class="picker-close" onclick="toggleModelPicker()">✕</button>
+        </div>
+        <div class="picker-body" id="modelPickerBody">
+            <!-- 动态加载 -->
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="status-dot" id="sidebarStatus"></div>
+        <span id="sidebarStatusText">就绪</span>
+    </div>
+</aside>
+
+<!-- 主内容区 -->
+<main class="main-content">
+
+    <!-- 页面：控制台 -->
+    <section class="page active" id="page-home">
+        <!-- Hero 搜索区 -->
+        <div class="hero">
+            <h1 class="hero-title">招投标信息聚合</h1>
+            <p class="hero-sub">输入自然语言，AI 自动解析意图并检索最新招标信息</p>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input
+                    type="text"
+                    class="search-input"
+                    id="searchInput"
+                    placeholder="试试输入：每天上午9点帮我查光伏巡检的招标信息..."
+                    onkeydown="if(event.key==='Enter')doSearch()"
+                >
+                <button class="search-btn" onclick="doSearch()">
+                    <span>开始检索</span>
+                    <span class="search-shortcut">↵</span>
+                </button>
+            </div>
+            <div class="search-hints">
+                <span>示例：</span>
+                <button class="hint-chip" onclick="fillSearch('每天上午9点帮我查光伏和风电的招标，排除大疆')">光伏风电招标</button>
+                <button class="hint-chip" onclick="fillSearch('每周一早上查新能源无人机的招标公告')">新能源无人机</button>
+                <button class="hint-chip" onclick="fillSearch('实时监控电力巡检相关的招标信息')">电力巡检监控</button>
+            </div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#E8F5E9">📊</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statToday">—</div>
+                    <div class="stat-label">今日新增</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#E3F2FD">🔄</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statRounds">—</div>
+                    <div class="stat-label">今日轮数</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#F3E5F5">📦</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statTotal">—</div>
+                    <div class="stat-label">累计招标</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 控制栏 -->
+        <div class="control-bar">
+            <div class="control-left">
+                <button class="btn btn-primary" id="btnStart" onclick="startMonitor()">
+                    <span>▶</span> 开始监控
+                </button>
+                <button class="btn btn-danger" id="btnStop" onclick="stopMonitor()" disabled>
+                    <span>⏹</span> 停止
+                </button>
+                <button class="btn btn-outline" onclick="runOnce()">
+                    <span>🔍</span> 立即检索一次
+                </button>
+            </div>
+            <div class="control-right">
+                <span class="next-run" id="nextRunLabel"></span>
+                <span class="interval-badge" id="intervalBadge">间隔: 20分钟</span>
+            </div>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="progress-card" id="progressCard" style="display:none">
+            <div class="progress-header">
+                <span class="progress-label">正在检索中...</span>
+                <span class="progress-stats" id="progressStats">0/0</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-site" id="progressSite">准备中...</div>
+        </div>
+
+        <!-- 日志区 -->
+        <div class="card log-card">
+            <div class="card-header">
+                <h3>📝 实时日志</h3>
+                <button class="btn-text" onclick="clearLogs()">清除</button>
+            </div>
+            <div class="log-console" id="logConsole">
+                <div class="log-empty">等待操作...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页面：招标结果 -->
+    <section class="page" id="page-results">
+        <div class="page-header">
+            <h2>📋 招标结果</h2>
+            <span class="page-count" id="resultCount">共 0 条</span>
+        </div>
+        <div class="card">
+            <div class="result-list" id="resultList">
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <div class="empty-text">暂无招标信息</div>
+                    <div class="empty-hint">在控制台输入关键词开始检索</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页面：网站管理 -->
+    <section class="page" id="page-sites">
+        <div class="page-header">
+            <h2>🌐 网站管理</h2>
+            <div class="page-actions">
+                <button class="btn btn-sm btn-outline" onclick="selectAllSites()">全选</button>
+                <button class="btn btn-sm btn-outline" onclick="deselectAllSites()">取消全选</button>
+                <button class="btn btn-sm btn-primary" onclick="saveSites()">保存</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="sites-grid" id="sitesGrid">
+                <div class="empty-state"><div class="empty-text">加载中...</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页面：设置 -->
+    <section class="page" id="page-settings">
+        <div class="page-header">
+            <h2>⚙️ 系统设置</h2>
+        </div>
+
+        <!-- 搜索配置 -->
+        <div class="card settings-card">
+            <h3 class="settings-title">🔍 搜索配置</h3>
+            <div class="form-group">
+                <label>关注关键词 <span class="form-hint">（逗号分隔）</span></label>
+                <textarea id="cfgKeywords" rows="2" placeholder="光伏,风电,无人机巡检,新能源..."></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>排除关键词</label>
+                    <input type="text" id="cfgExclude" placeholder="大疆,测绘,航拍...">
+                </div>
+                <div class="form-group">
+                    <label>必须包含</label>
+                    <input type="text" id="cfgMustContain" placeholder="无人机">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>检索间隔（分钟）</label>
+                    <input type="number" id="cfgInterval" min="5" max="120" value="20">
+                </div>
+                <div class="form-group">
+                    <label>Selenium 浏览器模式</label>
+                    <label class="toggle">
+                        <input type="checkbox" id="cfgSelenium">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()">💾 保存搜索配置</button>
+        </div>
+
+        <!-- AI 模型配置 -->
+        <div class="card settings-card">
+            <h3 class="settings-title">🤖 AI 模型配置</h3>
+            <div class="form-group">
+                <label>
+                    <label class="toggle" style="display:inline-flex">
+                        <input type="checkbox" id="cfgAiEnabled" onchange="toggleAiConfig()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    启用 AI 智能分析
+                </label>
+            </div>
+            <div id="aiConfigSection" style="display:none">
+                <div class="form-group">
+                    <label>API Key</label>
+                    <input type="password" id="cfgAiKey" placeholder="sk-...">
+                    <span class="form-hint">当前使用模型：<strong id="aiModelDisplay">deepseek-chat</strong></span>
+                </div>
+                <div class="form-group" id="customUrlGroup" style="display:none">
+                    <label>自定义 API 端点</label>
+                    <input type="text" id="cfgAiCustomUrl" placeholder="https://your-api.com/v1/chat/completions">
+                </div>
+                <div style="display:flex;gap:8px">
+                    <button class="btn btn-outline" onclick="testAiConnection()">🧪 测试连接</button>
+                    <button class="btn btn-primary" onclick="saveAiConfig()">💾 保存AI配置</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 危险操作 -->
+        <div class="card settings-card danger-zone">
+            <h3 class="settings-title" style="color:var(--danger)">⚠️ 危险操作</h3>
+            <button class="btn btn-danger" onclick="clearHistory()">🗑️ 清空全部历史数据</button>
+        </div>
+    </section>
+
+</main>
+
+<!-- Toast 提示 -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
