@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1000">
+<title>BidBuddy One-Pager</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  width:1000px;margin:0 auto;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+  background:#f5f5f7;color:#1d1d1f;padding:60px 0;
+  -webkit-font-smoothing:antialiased;
+}
+/* Hero */
+.hero{text-align:center;padding:0 0 50px}
+.hero .badge{display:inline-block;padding:6px 18px;background:#e8f4fd;color:#0071e3;border-radius:980px;font-size:13px;font-weight:600;margin-bottom:20px;letter-spacing:.02em}
+.hero h1{font-size:52px;font-weight:700;letter-spacing:-.03em;margin-bottom:8px}
+.hero .sub{font-size:20px;color:#6e6e73;font-weight:400;margin-bottom:6px}
+.hero .link{font-size:14px;color:#0071e3}
+/* Numbers */
+.numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:0 40px 50px}
+.num-card{background:#fff;border-radius:20px;padding:28px 20px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.06)}
+.num-card .val{font-size:40px;font-weight:700;letter-spacing:-.03em;color:#0071e3;line-height:1}
+.num-card .lbl{font-size:13px;color:#6e6e73;margin-top:8px;font-weight:500}
+/* Section */
+.section{padding:0 40px 40px}
+.section h2{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+/* Table */
+.table-wrap{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.06)}
+.table-wrap table{width:100%;border-collapse:collapse}
+.table-wrap th{background:#f5f5f7;padding:12px 16px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#6e6e73;text-align:left}
+.table-wrap td{padding:14px 16px;font-size:14px;border-top:1px solid rgba(0,0,0,.04);vertical-align:top}
+.table-wrap .old{color:#ff3b30;font-size:13px}
+.table-wrap .new{color:#34c759;font-size:13px;font-weight:500}
+/* Flow */
+.flow{display:flex;align-items:center;justify-content:center;gap:0;padding:30px 0}
+.flow-step{background:#fff;border-radius:16px;padding:20px 24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.06);min-width:150px}
+.flow-step .icon{font-size:28px;margin-bottom:8px}
+.flow-step .title{font-size:15px;font-weight:600}
+.flow-step .desc{font-size:11px;color:#6e6e73;margin-top:4px}
+.flow-arrow{font-size:24px;color:#0071e3;padding:0 12px;font-weight:700}
+/* Footer */
+.footer{text-align:center;padding:30px 40px 0;border-top:1px solid rgba(0,0,0,.06);margin:0 40px}
+.footer .links{display:flex;justify-content:center;gap:24px;font-size:14px}
+.footer .links a{color:#0071e3;text-decoration:none;font-weight:500}
+.footer .team{font-size:13px;color:#aeaeb2;margin-top:12px}
+/* Models */
+.models{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.model-chip{background:#fff;border-radius:12px;padding:14px 10px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.05);font-size:12px}
+.model-chip .mi{font-size:22px;margin-bottom:6px}
+.model-chip .mn{font-weight:600;font-size:12px}
+.model-chip .mp{font-size:10px;color:#6e6e73;margin-top:2px}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="badge">AI 先锋未来人才大赛 · Synapse 小组</div>
+  <h1>⚡ BidBuddy</h1>
+  <div class="sub">招投标AI助手 · 一句话触发 · 多模型驱动</div>
+  <div class="link">github.com/ryanhuangmoxuan-sketch/Bidbuddy</div>
+</div>
+
+<!-- Numbers -->
+<div class="numbers">
+  <div class="num-card"><div class="val">37</div><div class="lbl">招标网站覆盖</div></div>
+  <div class="num-card"><div class="val">13+</div><div class="lbl">AI 模型支持</div></div>
+  <div class="num-card"><div class="val">6</div><div class="lbl">维度优化升级</div></div>
+  <div class="num-card"><div class="val">1 行</div><div class="lbl">命令启动</div></div>
+</div>
+
+<!-- Flow -->
+<div class="section">
+  <h2>🔄 工作流程</h2>
+  <div class="flow">
+    <div class="flow-step"><div class="icon">💬</div><div class="title">自然语言</div><div class="desc">"每天9点查光伏巡检"</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="icon">🤖</div><div class="title">AI 解析</div><div class="desc">意图识别 · 提取参数</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="icon">🕷️</div><div class="title">多站抓取</div><div class="desc">37 网站并发爬取</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="icon">📊</div><div class="title">结果汇总</div><div class="desc">AI 筛选 · 定时推送</div></div>
+  </div>
+</div>
+
+<!-- Comparison -->
+<div class="section">
+  <h2>📊 vs 原始开源项目 — 六大维度升级</h2>
+  <div class="table-wrap">
+    <table>
+      <tr><th width="20">#</th><th width="110">优化维度</th><th width="270">原始项目</th><th width="300">BidBuddy 升级</th></tr>
+      <tr><td>1</td><td><b>UI 布局</b></td><td class="old">移动端底部 Tab 导航</td><td class="new">桌面端毛玻璃侧边栏</td></tr>
+      <tr><td>2</td><td><b>输入交互</b></td><td class="old">基础关键词输入框</td><td class="new">自然语言 Spotlight 搜索框</td></tr>
+      <tr><td>3</td><td><b>模型能力</b></td><td class="old">3 个硬编码模型</td><td class="new">13+ 可切换模型卡片，5 大厂商</td></tr>
+      <tr><td>4</td><td><b>代码架构</b></td><td class="old">单文件 app.py</td><td class="new">src/ 模块化分层结构</td></tr>
+      <tr><td>5</td><td><b>日志机制</b></td><td class="old">轮询拉取</td><td class="new">SSE 服务端实时推送</td></tr>
+      <tr><td>6</td><td><b>操作体验</b></td><td class="old">文本框填模型名</td><td class="new">弹窗式模型选择面板</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Models -->
+<div class="section">
+  <h2>🤖 多模型支持</h2>
+  <div class="models">
+    <div class="model-chip"><div class="mi">🐋</div><div class="mn">DeepSeek</div><div class="mp">Chat · V4 Pro</div></div>
+    <div class="model-chip"><div class="mi">🧠</div><div class="mn">OpenAI</div><div class="mp">GPT-4o · 4 · 3.5</div></div>
+    <div class="model-chip"><div class="mi">🏮</div><div class="mn">智谱AI</div><div class="mp">GLM-4 · Flash</div></div>
+    <div class="model-chip"><div class="mi">🌙</div><div class="mn">月之暗面</div><div class="mp">Moonshot v1</div></div>
+    <div class="model-chip"><div class="mi">☁️</div><div class="mn">阿里云</div><div class="mp">Qwen 系列</div></div>
+    <div class="model-chip"><div class="mi">🔧</div><div class="mn">自定义</div><div class="mp">兼容 OpenAI API</div></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="links">
+    <a href="https://github.com/ryanhuangmoxuan-sketch/Bidbuddy">📦 GitHub 仓库</a>
+    <span style="color:#aeaeb2">|</span>
+    <span>🏢 目标企业：超聚变</span>
+    <span style="color:#aeaeb2">|</span>
+    <span>👥 Synapse 小组</span>
+  </div>
+  <div class="team">AI 先锋未来人才大赛 · 参赛作品</div>
+</div>
+
+</body>
+</html>
