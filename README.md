@@ -9,6 +9,10 @@
 
 ![BidBuddy Screenshot](screenshot.png)
 
+### 🎬 操作演示
+
+![Demo](demo.gif)
+
 ## 🎯 项目简介
 
 本项目为 **AI 先锋未来人才大赛 Synapse 小组** 参赛作品，基于开源项目 [zhiqianzheng/BidMonitor-AI](https://github.com/zhiqianzheng/BidMonitor-AI) 完整复现，并完成 **六大维度优化升级**：
